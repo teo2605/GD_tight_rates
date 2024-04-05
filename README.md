@@ -1,0 +1,2 @@
+# Numerics_accompanying_tight_rates_for_gradient_descent
+ 
