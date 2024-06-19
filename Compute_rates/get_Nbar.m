@@ -22,6 +22,10 @@ function [Nbar, it] = get_Nbar(gL,gmu,tol)
     else
         Nbar_lb = ceil( -1 + max ( Nbar_lb_m, Nbar_lb_n ));
     end
+    if isinf(Nbar_lb)
+        Nbar = inf;
+        return;
+    end
     check_Nbar        = @(Nbar) (get_Ti(gL,gmu,Nbar  ) >= -tol); % check T(gL,gmu,Nbar  ) >=0
     check_Nbar_p      = @(Nbar) (get_Ti(gL,gmu,Nbar+1) < tol); % check T(gL,gmu,Nbar+1) < 0
     check_Nbar_Nbar_p = @(Nbar) (check_Nbar(Nbar)  && check_Nbar_p (Nbar)); % check that both conditions are satisfied
@@ -37,7 +41,7 @@ function [Nbar, it] = get_Nbar(gL,gmu,tol)
             Nbar_ub = 2*Nbar_ub;
             it_bnd = it_bnd + 1;
             if it_bnd > itmax
-                fprintf("%.4f, %.4f, %.4f\n", gL, gmu, Nbar)
+                fprintf("Nbar not found; estimation after %d iterations: Nbar = %.4f. Setup: gamma*L = %.4f, gamma*mu = %.4f\n", itmax, Nbar, gL, gmu);
                 Nbar = inf;
                 return;
                 % error("Exceeded number of iteration to compute initial bounds of Nbar!");
