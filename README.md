@@ -1,4 +1,4 @@
-# Numerics_accompanying_tight_rates_for_gradient_descent
+# Numerics accompanying tight rates for gradient descent
  
 Folders and files:
 
@@ -8,6 +8,7 @@ Folders and files:
 		    - pep.m -- adapted to include hypoconvex functions;
 		    - Functions_classes -> Hypoconvex.m -- implements the class of hypoconvex functions.
         - It confirms numerically the tightness for all the rates (Theorems 2.1-2.4).
+    - GD_rates_live_script.mlx: Matlab live script (~notebook) to check the algebraic manipulations for the upper bounds proofs
 
 - Tightness_check_triplets:
         - build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable step-sizes in [1, \bar{\gamma}^1];
