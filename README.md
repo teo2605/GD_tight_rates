@@ -1,4 +1,5 @@
 # Numerics accompanying tight rates for gradient descent
+ ## Teodor Rotaru, François Glineur, and Panagiotis Patrinos. Exact worst-case convergence rates of gradient descent: a complete analysis for all constant stepsizes over nonconvex and convex functions, 2024; URL https://arxiv.org/abs/2406.17506.
  
 Folders and files:
 
