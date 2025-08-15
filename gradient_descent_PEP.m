@@ -20,7 +20,7 @@ function wc = gradient_descent_PEP(L, mu, gamma, Delta, N, use_opt)
         use_opt = true;       % if false: init. cond. (f0-fN)<=Delta; if true: (f0-f*)<=Delta
     end
     %%
-    if length(gamma) == 1 
+    if isscalar(gamma) 
         gamma_vec = gamma * ones(1, N);
     else
         gamma_vec = gamma; % to use for variable step-sizes

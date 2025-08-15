@@ -23,11 +23,11 @@ g_vals = zeros(3,N+1);
 for i = 0 : Nbar+1;  g_vals(:,i+1) = g_quad_(i); end
 %% define the last (N-Nbar) gradients
 q_ = @(i) (-1)^(i-(Nbar+1)) * sqrt( (m^2-1)*(1-n^(2*(i-(Nbar+1))))/(1-n^2) ) ;
-R_ = @(i)  1/( 1+ q_(i)^2 ) * blkdiag(0, ...
+R_ = @(i)  1/sqrt( 1+ q_(i)^2 ) * blkdiag(0, ...
                                         [ 1,   -q_(i) ; ...
                                           q_(i) ,   1] ) ;
-for i = Nbar+1 : N
-    g_vals(:,i+1) = ( n*eye(3) + (m-n)*R_(i) ) * g_vals(:,i);
+for i = Nbar+2 : N
+    g_vals(:,i+1) = ( n*eye(3) + (m-n)/sqrt(1+q_(i)^2) * R_(i) ) * g_vals(:,i);
 end
 g_ = @(i) (g_vals(:,i+1)); 
 %% function values

@@ -31,7 +31,12 @@ else
             end
         end
     else % mu > 0; strongly convex
-        PN = (-1 + (1-gamma*mu)^(-2*N)) / (gamma * mu);
+        Nbar = get_Nbar( gamma*L, gamma*mu );  
+        if N > Nbar
+            PN = (-1 + (1-gamma*mu)^(-2*N)) / (gamma * mu);
+        else
+            PN = (-1+(1-gamma*L).^(-2*N)) / (gamma*L);
+        end
     end
 end
 end

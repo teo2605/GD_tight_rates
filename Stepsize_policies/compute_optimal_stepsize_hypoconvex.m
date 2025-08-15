@@ -1,8 +1,8 @@
 function hs = compute_optimal_stepsize_hypoconvex(N, kappa, gL0)
-% gL0 = initial guess
+    % gL0 = initial guess
     if nargin == 0
         N = 100; 
-        kappa = -0.10;
+        kappa = -0.01;
     end
     if nargin < 3
         h_start = roots([-kappa*(1+kappa), 3*kappa+(1+kappa)^2, -4*(1+kappa), 4]);
@@ -11,13 +11,14 @@ function hs = compute_optimal_stepsize_hypoconvex(N, kappa, gL0)
     else
         h_start = gL0;
     end
-    L = 1;  mu = kappa*L;    
-    f_to_min = @(h) ( -h*get_PN(L,mu,h/L,N) );
+    L = 1;  mu = kappa*L;
+    % maximize the denominator
+    f_to_min = @(h) ( -min( h*get_PN(L,mu,h/L,N),  (-1 + (1 - h).^(-2*N)) ) );
     
     opts.MaxIterations = 3000;
     opts.MaxFunctionEvaluations = 3000;
-    opts.OptimalityTolerance = 1e-10;
+    opts.OptimalityTolerance = 1e-12;
     opts.Display = 'off';  
-    
-    hs = fmincon(f_to_min, h_start, [], [], [], [], 1, 2, [], opts);
+        
+    hs = fmincon(f_to_min, h_start, [], [], [], [], 1, 2-1e-12, [], opts);
 end
