@@ -13,17 +13,17 @@ Folders and files:
     - GD_rates_live_script.mlx: Matlab live script (~notebook) to check the algebraic manipulations for the upper bounds proofs
 
 - Tightness_check_triplets:
-        - build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable stepsizes in (1, \bar{\gamma}^1];
-        - build_3D_interpolating_triplets.m: Tightness of Proposition 5.14 (constant stepsizes in \[\bar{\gamma}^1, \bar{\gamma}^{N-1}\);
-
+	- build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable stepsizes in (1, \bar{\gamma}^1];
+ 	- build_3D_interpolating_triplets.m: Tightness of Proposition 5.14 (constant stepsizes in [\bar{\gamma}^1, \bar{\gamma}^{N-1})).
+  
 - Compute_rates: it includes functions to compute the theoretical worst-case rates from Theorems 2.1-2.4
     - get_wc_rate.m: computes the rates with:
         - constant stepsizes (Theorems 2.1-2.3);
-        - variable stepsizes up to threshold (\bar{\gamma}L)^1 (Theorem 2.4).
+        - variable stepsizes up to threshold (\bar{\gamma}L)^1 (Theorem 2.5).
     - get_gammaL_bar.m: compute the stepsize thresholds \bar{\gamma}^i; (see Section 2.5)
     - get_Nbar.m: for fixed stepsize gamma, it computes the maximum number of iterations for which the worst-case rate is (1-\gamma L)^{2N}, corresponding to worst-case function Lx^2/2;
-    - get_PN.m: it computes the (complicated) denominator for hypoconvex functions.
-	- plot_denominators_for_constant_stepsizes.m: it shows the complicated denominator in the rate for hypoconvex functions and constant stepsize belonging to (0, 2).
+    - get_PN.m: it computes the (complicated) denominator for hypoconvex functions defined in Theorem 2.3.
+	- plot_denominators_for_constant_stepsizes.m: it shows the leading term in the denominator in the rate for hypoconvex functions and constant stepsize belonging to (0, 2).
 		
 - Stepsize_policies (Section 2.6)
     - it includes files to compute the optimal constant stepsizes (Section 2.6.1) and dynamic stepsize sequences (Section 2.6.2)
@@ -31,10 +31,10 @@ Folders and files:
             - computes the optimal constant stepsize (possibly dependent on the number of iterations) for hypoconvex (weakly convex) functions (used for comparisons);
       - get_sequence_stepsizes.m: (Definition 2.16)
             - generates the dynamic sequence (independent on the number of iterations) converging to 2/(1+max{0,kappa}) for nonconvex and strongly convex functions;
-      - variable_stepsizes_comparison.m: (used to generate Tables 2.1 and 2.2)
+      - variable_stepsizes_comparison_strongly_convex.m: (used to generate Tables 2.2 and 2.3)
             - compares, for convex / strongly convex functions, the rates with different stepsize schedules:
-      - variable_stepsizes_comparison_hypoconvex.m: compares, for hypoconvex (weakly convex) functions, the rates with different stepsize schedules;
-      - gradient_descent_dynamic_stepsizes_PEP.m: (confirms numerically Theorem 2.18, Corollary 2.19, Theorem 2.20, Proposition 2.21)
+      - variable_stepsizes_comparison_hypoconvex.m: compares, for weakly convex functions, the rates with different stepsize schedules (used to generate Table 2.4);
+      - gradient_descent_dynamic_stepsizes_PEP.m: (confirms numerically Theorem 2.18, Corollary 2.19, Corollary 2.20, Corollary 2.21)
             - solves the PEP for Gradient Descent using dynamic stepsizes; 
-            - for nonconvex functions, the sequence is trimmed by the (asymptotic) optimal constant stepsize;
+            - for weakly convex functions, the sequence is trimmed by the (asymptotic) optimal constant stepsize;
             - confirms the tightness of rates obtained using dynamic stepsizes.
