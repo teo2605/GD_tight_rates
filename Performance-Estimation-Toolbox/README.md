@@ -1,0 +1,140 @@
+# Performance-Estimation-Toolbox (PESTO)
+
+This code comes jointly with the following [`reference`](PESTO_CDC2017_FINAL.pdf).
+
+> [1] Taylor, Adrien B., Julien M. Hendrickx, and François Glineur. "Performance Estimation Toolbox (PESTO): automated worst-case analysis of first-order optimization methods." Proceedings of the 56th IEEE Conference on Decision and Control (CDC 2017).
+
+Date:    May 2021
+
+Version: May 2021
+
+A Python alternative to PESTO can be found in the [`PEPit`](https://github.com/PerformanceEstimation/PEPit) repository.
+A more updated list of examples that can be studied through PEPs is available in the [`PEPit documentation`](https://pepit.readthedocs.io/en/0.2.1/examples.html). Please feel free to suggest new examples, or to add yours via pull requests! We are very happy to take feedback and suggestions!
+
+#### Authors & Contributors
+- [**Adrien Taylor**](http://www.di.ens.fr/~ataylor/) (author)
+- [**Julien Hendrickx**](https://perso.uclouvain.be/julien.hendrickx/index.html) (author)
+- [**François Glineur**](https://perso.uclouvain.be/francois.glineur/) (author)
+- [**Sébastien Colla**](https://perso.uclouvain.be/sebastien.colla/) (contributor)
+
+#### Performance Estimation Framework
+
+The toolbox implements the performance estimation approach as developped in the following works:
+ > [2] Taylor, Adrien B., Julien M. Hendrickx, and François Glineur. "Smooth strongly convex interpolation and exact worst-case performance of first-order methods." Mathematical Programming 161.1-2 (2017): 307-345.
+
+ > [3] Taylor, Adrien B., Julien M. Hendrickx, and François Glineur. "Exact worst-case performance of first-order methods for composite convex optimization." SIAM Journal on Optimization 27.3 (2017): 1283-1313
+
+Note that the approach of using semidefinite programming for obtaining worst-case guarantees was originally introduced in
+
+ > [4] Drori, Yoel, and Marc Teboulle. "Performance of first-order methods for smooth convex minimization: a novel approach." Mathematical Programming 145.1-2 (2014): 451-482
+
+## Introduction to the toolbox
+
+The document [`PESTO_CDC2017_FINAL`](PESTO_CDC2017_FINAL.pdf) contains the reference paper for the toolbox.
+This paper contains a simplified and quick general introduction to the theory underlying the toolbox, and to its use.
+
+The document [`UserGuide`](UserGuide.pdf) contains more detailed information and examples about the use of the toolbox.
+
+The general purpose of the toolbox is to help the researchers producing worst-case guarantees for their favorite first-order methods.
+
+## Setup
+
+**Note:** This code requires [YALMIP](https://yalmip.github.io/) along with a suitable SDP solver (e.g., Sedumi, SDPT3, Mosek).
+
+**Setup with dependencies:** guidelines can be found on the [wiki](https://github.com/AdrienTaylor/Performance-Estimation-Toolbox/wiki/Toolbox-(and-dependencies)-installation)
+
+Once YALMIP and the SDP solver installed (type 'yalmiptest' for checking the installation went fine); the toolbox can simply be installed by typing
+```Matlab
+Install_PESTO
+```
+in the Matlab prompt (which only adds the required folders to your Matlab path).
+You can now execute the demo files for a step by step introduction to the toolbox.
+
+**Numerical efficiency** Note that it is in general not reasonable to solve 'pure' PEPs (not involving any relaxation) with more than 300 iterations (in the base case: unconstrained minimization), see our numerical tests on the [wiki](https://github.com/AdrienTaylor/Performance-Estimation-Toolbox/wiki/Numerical-efficiency-of-PESTO).
+
+**Run all examples** You can run all examples by typing
+```Matlab
+test_install
+```
+in the matlab prompt. Alternatively, the command
+```Matlab
+test_install(1)
+```
+allows to go a bit more quietly through them.
+## Example
+
+The folder [Examples](/Examples) contains numerous introductory examples to the toolbox.
+
+The files [`demo`](demo.m) summarizes the currently available step-by-step demonstration files and their targets. As an example, the first demonstration file can be executed by typing
+```Matlab
+demo1
+```
+in the prompt.
+
+
+Among the other examples, the following code (see [`GradientMethod`](Examples/01_Methods%20for%20unconstrained%20convex%20minimization/E_GradientMethod.m)) generates a worst-case scenario for the gradient method applied to a smooth (possibly strongly) convex function.
+
+```Matlab
+% In this example, we use a fixed-step gradient method for
+% solving the L-smooth convex minimization problem
+%   min_x F(x); for notational convenience we denote xs=argmin_x F(x).
+%
+% We show how to compute the worst-case value of F(xN)-F(xs) when xN is
+% obtained by doing N steps of the gradient method starting with an initial
+% iterate satisfying ||x0-xs||<=1.
+
+
+% (0) Initialize an empty PEP
+P=pep();
+
+% (1) Set up the objective function
+param.mu=0;	% Strong convexity parameter
+param.L=1;      % Smoothness parameter
+
+F=P.DeclareFunction('SmoothStronglyConvex',param); % F is the objective function
+
+% (2) Set up the starting point and initial condition
+x0=P.StartingPoint();		  % x0 is some starting point
+[xs,fs]=F.OptimalPoint(); 	  % xs is an optimal point, and fs=F(xs)
+P.InitialCondition((x0-xs)^2<=1); % Add an initial condition ||x0-xs||^2<= 1
+
+% (3) Algorithm
+h=1/param.L;		% step size
+N=10;		% number of iterations
+
+x=x0;
+for i=1:N
+    x=x-h*F.gradient(x);
+end
+xN=x;
+
+% (4) Set up the performance measure
+fN=F.value(xN);                % g=grad F(x), f=F(x)
+P.PerformanceMetric(fN-fs); % Worst-case evaluated as F(x)-F(xs)
+
+% (5) Solve the PEP
+P.solve()
+
+% (6) Evaluate the output
+double(fN-fs)   % worst-case objective function accuracy
+
+% The result should be
+% param.L/2/(2*N+1)
+
+```
+
+#### Acknowledgments
+
+The authors would like to thank [**Francois Gonze**](https://perso.uclouvain.be/francois.gonze/) from UCLouvain and **Yoel Drori** from Google Inc. for their feedbacks on preliminary versions of the toolbox.
+
+Additional material was incorporated thanks to:
+- [**Ernest Ryu**](http://www.math.snu.ac.kr/~ernestryu/) (SNU), [**Carolina Bergeling**](http://www.control.lth.se/personnel/carolina-bergeling.html) (Lund), and [**Pontus Giselsson**](http://www.control.lth.se/personnel/pontus-giselsson/) (Lund) (monotone operators and splitting methods),
+- [**Francis Bach**](https://www.di.ens.fr/~fbach/) (Inria & ENS Paris) (stochastic methods, potential functions, and inexact proximal operators),
+- [**Radu-Alexandru Dragomir**](https://www.di.ens.fr/radu-alexandru.dragomir/) (ENS Paris & TSE), [**Alexandre d’Aspremont**](https://www.di.ens.fr/~aspremon/) (CNRS & ENS Paris), and [**Jérôme Bolte**](https://www.tse-fr.eu/people/jerome-bolte) (TSE) (Bregman divergences and new notions of smoothness).
+- [**Mathieu Barré**](https://mathbarre.github.io/) (Inria \& ENS Paris), and [**Alexandre d’Aspremont**](https://www.di.ens.fr/~aspremon/) (CNRS \& ENS Paris) (adaptive methods, and inexact proximal operators).
+
+Last but not least, we thank **Loic Estève** (Inria) for technical support.
+
+ 
+
+
