@@ -12,8 +12,8 @@ Folders and files:
     - GD_rates_live_script.mlx: Matlab live script (~notebook) to check the algebraic manipulations for the upper bounds proofs
 
 - Tightness_check_triplets:
-        - build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable stepsizes in [1, \bar{\gamma}^1];
-        - build_3D_interpolating_triplets.m: Tightness of Proposition 5.14 (constant stepsizes in [\bar{\gamma}^1, \bar{\gamma}^{N-1}];
+        - build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable step-sizes in [1, \bar{\gamma}^1];
+        - build_3D_interpolating_triplets.m: Tightness of Conjecture 2 (fixed step-sizes in [\bar{\gamma}^1, \bar{\gamma}^{N-1}];
 
 - Compute_rates: it includes functions to compute the theoretical worst-case rates from Theorems 2.1-2.4
     - get_wc_rate.m: computes the rates with:
