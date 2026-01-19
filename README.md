@@ -4,25 +4,25 @@
 Folders and files:
 
 - [main folder]
+	- GD_rates_live_script.mlx: Symbolic Matlab live script (~notebook) to check the algebraic manipulations for the upper bounds proofs
     - gradient_descent_PEP.m: Solves the PEP on Gradient Descent for Smooth functions: 
 	    - To run it, the PESTO toolbox must be installed and updated with the files from folder PESTO_files (can be copy-pasted directly over folder PESTO_files from PESTO toolbox):
 		    - pep.m -- adapted to include hypoconvex functions;
 		    - Functions_classes -> Hypoconvex.m -- implements the class of hypoconvex functions.
 		Alternatively, one can use directly install the cloned PESTO version from the Performance-Estimation-Toolbox folder. 
-        - It confirms numerically the tightness for all the rates (Theorems 2.1-2.4).
-    - GD_rates_live_script.mlx: Matlab live script (~notebook) to check the algebraic manipulations for the upper bounds proofs
+        - It confirms numerically the tightness for all the rates (Theorems 2.2-2.5).
 
 - Tightness_check_triplets:
 	- build_2D_interpolating_triplets_variable.m: Tightness of Conjecture 1 (variable stepsizes in (1, \bar{\gamma}^1];
  	- build_3D_interpolating_triplets.m: Tightness of Proposition 5.14 (constant stepsizes in [\bar{\gamma}^1, \bar{\gamma}^{N-1})).
   
-- Compute_rates: it includes functions to compute the theoretical worst-case rates from Theorems 2.1-2.4
+- Compute_rates: it includes functions to compute the theoretical worst-case rates from Theorems 2.2-2.5
     - get_wc_rate.m: computes the rates with:
-        - constant stepsizes (Theorems 2.1-2.3);
+        - constant stepsizes (Theorems 2.2-2.4);
         - variable stepsizes up to threshold (\bar{\gamma}L)^1 (Theorem 2.5).
     - get_gammaL_bar.m: compute the stepsize thresholds \bar{\gamma}^i; (see Section 2.5)
     - get_Nbar.m: for fixed stepsize gamma, it computes the maximum number of iterations for which the worst-case rate is (1-\gamma L)^{2N}, corresponding to worst-case function Lx^2/2;
-    - get_PN.m: it computes the (complicated) denominator for hypoconvex functions defined in Theorem 2.3.
+    - get_PN.m: it computes the (complicated) denominator for hypoconvex functions defined in Theorem 2.4.
 	- plot_denominators_for_constant_stepsizes.m: it shows the leading term in the denominator in the rate for hypoconvex functions and constant stepsize belonging to (0, 2).
 		
 - Stepsize_policies (Section 2.6)
